@@ -1,0 +1,198 @@
+/**********************************
+	Stylesheet for Twitch TV Status App
+	Author: Chris Jones
+	Date: 5/13/2016
+	version: 1.0
+	Revision History:
+	Version: 1.0 - Initial Application
+
+*********************************/
+
+/*******************************************
+	TESTING COMPONENTS
+*******************************************/
+
+.testing-border {
+	border: 1px solid #F00;
+}
+
+/*******************************************
+	BASE ELEMENT STYLES
+*******************************************/
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: url("../img/map-min.jpg") no-repeat center center fixed;
+	background-size: cover;
+}
+
+header {
+	text-align: center;
+	background: #eee;
+	background: rgba(255,255,255,.8);
+	margin-top: 50px;
+	border-radius: 30px;
+}
+
+img {
+	max-width: 100%;
+	width: 100px;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+/*******************************************
+	CONTAINER STYLES
+*******************************************/
+
+#wrapper {
+	margin: 0 auto;
+	width: 100%;
+}
+
+#status-btn-group,
+#user-container,
+#search-container {
+	margin-top: 20px;
+	text-align: center;
+}
+
+#user-container {
+	margin-bottom: 20px;
+	border: 2px solid #eee;
+	box-shadow: 0 0 10px #333;
+}
+
+#heading-container {
+	padding: 0;
+	background: #487c89;
+}
+
+/*******************************************
+	GRID STYLES
+*******************************************/
+
+.row {
+	background: #eee;
+	width: 100%;
+	border-bottom: 1px solid #fff;
+	padding: 10px 0;
+}
+
+.col-1-3 {
+	width: 32%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.col-2-3 {
+	width: 66%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/*******************************************
+	CONTENT STYLES
+*******************************************/
+
+header img {
+	width: 200px;
+	padding-top: 5px;
+}
+
+#search-container input {
+	width: 30%;
+	min-width: 200px;
+	text-align: center;
+	border: none;
+}
+
+.table-heading {
+	text-align: center;
+	color: #fff;
+}
+
+#heading-container .table-heading:last-child {
+	margin-right: -1px;
+}
+
+img[alt*="logo"]{
+	border-radius: 50px;
+}
+
+/*******************************************
+	BUTTON STYLES
+*******************************************/
+
+#search-container span {
+	background: #fff;
+	padding: 4px;
+	background: #487c89;
+	color: #fff;
+	cursor: pointer;
+}
+
+#status-btn-group button {
+	background: #51bfb9;
+	color: #FFF;
+	border: 1px solid #FFF;
+	width: 150px;
+	height: 35px;
+	margin-right: -10px;
+	cursor: pointer;
+}
+
+#status-btn-group button:hover {
+	background: #1ad5ca;
+}
+
+/*******************************************
+	UTILITY STYLES
+*******************************************/
+
+.online {
+	background: #48895e;
+	color: #fff;
+	-webkit-transition: background .25s;
+	transition: background .25s;
+}
+
+.online:hover {
+	background: #5aad76;
+}
+
+.closed {
+	background: #b95852;
+	color: #fff;
+}
+
+.hide {
+	display: none;
+}
+
+#status-btn-group .selected {
+	box-shadow: inset 0 1px 4px rgba(0,0,0,0.6);
+	background: #1ad5ca;
+}
+
+/*******************************************
+	RESPONSIVE STYLES
+*******************************************/
+
+@media (min-width: 960px) {
+	#wrapper {
+		width: 960px;
+	}
+
+	.col-1-3 {
+		width: 33%;
+	}
+}
+
+
