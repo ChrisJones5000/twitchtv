@@ -1,3 +1,4 @@
+
 /*
 	Create Twitch TV Status App that accomplishes the following:
 	1. Ability to determine if Free Code Camp is currently streaming on Twitch.tv.
@@ -11,8 +12,11 @@
 //Fetch API data
 function fetchUsers(){
 
+	//Provide static user data as a base case
+	//Establish base URL to pull twitch data from API
 	var userArray = ["freecodecamp", "storbeck", "terakilobyte", "habathcx", "RobotCaleb", "thomasballinger", "noobs2ninjas", "beohoff", "syndicate", "riotgames", "esl_csgo", "brunofin", "comster404"];	
 	var baseURL = "https://api.twitch.tv/kraken/";
+	var stream, link;
 
 	//Loop through each value in userArray
 	$.each(userArray, function(i, val){
@@ -21,10 +25,10 @@ function fetchUsers(){
 		var userURL = "users/";
 		var logo = "<img src='img/generic-profile.png' alt='generic logo'>";
 
-		//Get streaming JSON information
+		//Get streaming JSON information by building url from concatenating baseURl, streamingURL,
+		//and the value that is being looped through in the userArray
 		$.getJSON(baseURL + streamingURL + val, function(json){			
-			var status = json.stream;
-			var stream, link;
+			var status = json.stream;			
 
 			//If user is online set status to online and
 			//set stream as name of game stream
@@ -71,6 +75,8 @@ function fetchUsers(){
 			$("#output").append(buildOfflineHTML(logo, user, status));
 		}
 
+		//*********REFACTOR THESE FUNCTIONS*****************
+		//*******NOT FOLLOWING DRY PRINCIPLE****************
 		//Function to build HTML if user is online
 		function buildOnlineHTML(link, logo, user, stream){
 			html = "<a href='" + link + "' target='_blank'>";
@@ -101,9 +107,12 @@ function fetchUsers(){
 //Search Twitch TV games based on search input text
 function searchGames(){
 	$("#output").html("");
+	//Store input from user in a variable
+	//Remove any whitespace with trim
 	var $textInput = $.trim($("#search-box").val());
 	var limitResults = 10;
 	var gamesURL = "https://api.twitch.tv/kraken/streams?game=" + $textInput + "&limit=" + limitResults;
+	//Set generic logo in the event user does not have a logo set
 	var logo = "<img src='img/generic-profile.png' alt='generic logo'>";
 	var link = "";
 	var username = "";
@@ -115,13 +124,14 @@ function searchGames(){
 			
 			//Test game data exists
 			if (json.streams[0] !== undefined){
-				//Loop through each result up to maximum
+				//Loop through each result up to maximum limit (10)
 				for (var i = 0; i < limitResults; i++){
 
 					link = json.streams[i].channel.url;
 					username = json.streams[i].channel.display_name;
 					game = json.streams[i].game;
 
+					//If user has a logo set, use it as logo instead of generic logo
 					if (json.streams[i].channel.logo){
 						logo = "<img src='" + json.streams[i].channel.logo + "' alt='logo'>";
 					}
@@ -139,6 +149,7 @@ function searchGames(){
 	}
 }
 
+//Build HTML when user searches for a specific game
 function createSearchHTML(link, logo, username, game){
 	var html = "";
 
@@ -149,6 +160,7 @@ function createSearchHTML(link, logo, username, game){
 	return html;
 }
 
+//*************REFACTOR TO INCORPORATE EVENT BUBBLING******************
 //If user clicks on search icon
 //search Twitch TV API for games based on text
 $("#search-container span").click(function(){
@@ -169,13 +181,13 @@ $("#status-btn-group button").click(function(){
 		$("#output").html("");
 		//Add 'selected' class to All button if Reset button is pressed
 		$("#status-btn-group button:first-child").addClass("selected");
-		fetchUsers();		
+		fetchUsers();	
 	} else if ($(this).text() === "Offline"){
 		//If user selects "Offline" button
-		//Add 'hide' class to all rows with 'online' class	
+		//Add 'hide' class to all rows with 'online' class
 		$("#user-container .online").addClass("hide");
 		//Add 'selected' class to Offline button if pressed
-		$(this).addClass('selected');		
+		$(this).addClass('selected');
 	} else if ($(this).text() === "Online") {
 		//If user selects "Online" button
 		//Add 'hide' class to all rows without 'online' class
@@ -199,7 +211,9 @@ $("#search-box").blur(function(){
 $("#search-box").val("");
 
 //If user hits enter instead of clicking on search icon
-$("#search-box").keypress(function(event){
+//JQuery normalizes event.keyCode and event.charCode, so use event.which to find if enter key is pressed
+//Enter key = 13
+$("#search-box").on("keydown", function(event){
 	if (event.which === 13) {
 		event.preventDefault();
 		searchGames();
